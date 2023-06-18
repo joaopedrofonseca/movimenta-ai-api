@@ -34,20 +34,27 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { PrismaClient } from '@prisma/client';
-export var prisma;
-export function connectDb() {
-    prisma = new PrismaClient();
-}
-export function disconnectDB() {
+import bcrypt from 'bcrypt';
+import authRepository from 'repository/auth.repository';
+export function signUp(_a) {
+    var email = _a.email, password = _a.password, name = _a.name;
     return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, (prisma === null || prisma === void 0 ? void 0 : prisma.$disconnect())];
+        var hashPassword;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0: return [4 /*yield*/, bcrypt.hash(password, 10)];
                 case 1:
-                    _a.sent();
-                    return [2 /*return*/];
+                    hashPassword = _b.sent();
+                    return [2 /*return*/, authRepository.create({
+                            email: email,
+                            password: hashPassword,
+                            name: name,
+                        })];
             }
         });
     });
 }
+var authService = {
+    signUp: signUp,
+};
+export default authService;

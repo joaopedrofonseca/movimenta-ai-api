@@ -1,15 +1,12 @@
 import express from 'express';
 import cors from 'cors';
-import { connectDb } from './config/database.js';
+import { authRouter } from 'routers/auth.router';
 var app = express();
-var port = process.env.PORT || 4000;
+var port = process.env.PORT || 5000;
 app
     .use(cors())
-    .use(express.json());
-export function init() {
-    connectDb();
-    return Promise.resolve(app);
-}
+    .use(express.json())
+    .use([authRouter]);
 app.listen(port, function () {
     console.log("Server is listening on port ".concat(port, "."));
 });

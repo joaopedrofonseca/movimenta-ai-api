@@ -34,19 +34,25 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { PrismaClient } from '@prisma/client';
-export var prisma;
-export function connectDb() {
-    prisma = new PrismaClient();
-}
-export function disconnectDB() {
+import authService from 'services/auth.services';
+export function signUp(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, (prisma === null || prisma === void 0 ? void 0 : prisma.$disconnect())];
+        var _a, email, password, name, user, error_1;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _a = req.body, email = _a.email, password = _a.password, name = _a.name;
+                    _b.label = 1;
                 case 1:
-                    _a.sent();
-                    return [2 /*return*/];
+                    _b.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, authService.signUp({ email: email, password: password, name: name })];
+                case 2:
+                    user = _b.sent();
+                    return [2 /*return*/, res.status(201)];
+                case 3:
+                    error_1 = _b.sent();
+                    return [2 /*return*/, res.status(500)];
+                case 4: return [2 /*return*/];
             }
         });
     });

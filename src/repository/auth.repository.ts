@@ -1,11 +1,9 @@
-import { prisma } from "config/database"
+import { prisma } from "../config/database.js";
 
-async function create({ email, password, name }) {
-    return prisma.usuarios.create({
+async function create({ email, senha, nome }) {
+    return await prisma.usuarios.create({
         data: {
-            email,
-            nome: name,
-            senha: password,
+            email, senha, nome
         }
     })
 };

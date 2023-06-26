@@ -1,14 +1,18 @@
 import bcrypt from 'bcrypt';
-import authRepository from 'repository/auth.repository';
+import authRepository from '../repository/auth.repository.js';
 
 export async function signUp({email, password, name}) {
     const hashPassword = await bcrypt.hash(password, 10);
 
-    return authRepository.create({
+    await authRepository.create({
         email,
-        password: hashPassword,
-        name,
+        senha: hashPassword,
+        nome: name,
     });
+}
+
+export async function SignIn({email, password}) {
+    
 }
 
 const authService = {

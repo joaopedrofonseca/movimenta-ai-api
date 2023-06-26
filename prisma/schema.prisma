@@ -15,9 +15,31 @@ model sessions {
 }
 
 model usuarios {
-  id       Int        @id(map: "usuarios_pk") @default(autoincrement())
-  nome     String     @db.VarChar(255)
-  email    String     @unique @db.VarChar(255)
-  senha    String     @db.VarChar(255)
-  sessions sessions[]
+  id         Int          @id(map: "usuarios_pk") @default(autoincrement())
+  nome       String       @db.VarChar(255)
+  email      String       @unique @db.VarChar(255)
+  senha      String       @db.VarChar(255)
+  atividades atividades[]
+  cadastros  cadastros[]
+  sessions   sessions[]
+}
+
+model atividades {
+  id          Int         @id(map: "atividades_pk") @default(autoincrement())
+  nome        String      @db.VarChar(255)
+  horario     String
+  integrantes Int
+  criadopor   Int
+  usuarios    usuarios    @relation(fields: [criadopor], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "atividades_fk0")
+  cadastros   cadastros[]
+}
+
+model cadastros {
+  id           Int        @default(autoincrement())
+  atividade_id Int        @default(autoincrement())
+  usuario_id   Int
+  atividades   atividades @relation(fields: [atividade_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cadastros_fk0")
+  usuarios     usuarios   @relation(fields: [usuario_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cadastros_fk1")
+
+  @@id([id, atividade_id], map: "cadastros_pk")
 }
